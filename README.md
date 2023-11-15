@@ -1,17 +1,5 @@
 # likbez
 
-A new Flutter project.
+Читалка
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# likbez
+[Макет проекта в Figma](https://www.figma.com/file/IzkoJ3ic8mVPzBHoXHsjbM/%D0%9B%D0%B8%D0%BA%D0%91%D0%B5%D0%B7---%D0%9F%D1%80%D0%BE%D1%82%D0%BE%D1%82%D0%B8%D0%BF?type=design&node-id=0%3A1&mode=design&t=uWfVkYO67GfAEEgk-1)
