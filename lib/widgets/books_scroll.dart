@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:likbez/theme/colors.dart';
+import 'package:likbez/widgets/book_preview.dart';
 
 class BooksScroll extends StatelessWidget {
     final String title;
@@ -7,40 +9,34 @@ class BooksScroll extends StatelessWidget {
 
     @override
     Widget build(BuildContext context) {
-        return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-                Text(title),
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 20.0),
-                    height: 200.0,
-                    child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: <Widget>[
-                            bookPreview,
-                            bookPreview,
-                            bookPreview,
-                            bookPreview,
-                        ],
+        return Container(
+            // TODO: Изменить отступы
+            padding: EdgeInsets.symmetric(horizontal: 20),
+
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                    Text(
+                        title,
+                        style: const TextStyle(color: white),
                     ),
-                ),
-            ],
+                    Container(
+                        margin: const EdgeInsets.symmetric(vertical: 20.0),
+                        height: 200.0,
+                        child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: const <Widget>[
+                                BookPreview('Дюна'),
+                                BookPreview('Дюна'),
+                                BookPreview('Дюна'),
+                                BookPreview('Дюна'),
+                                BookPreview('Дюна'),
+                            ],
+                        ),
+                    ),
+                ],
+            ),
         );
     }
 }
-
-Widget bookPreview = SizedBox(
-    width: 600,
-    height: 400,
-    child: Column(
-        children: [
-            Image.asset(
-                'images/cover.jpg',
-                height: 600,
-                width: 100,
-            ),
-            Text('Дюна'),
-        ],
-    ),
-);
