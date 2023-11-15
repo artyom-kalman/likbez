@@ -8,9 +8,10 @@ class Likbez extends StatelessWidget {
 
     @override
     Widget build(BuildContext context) {
-        return const MaterialApp(
+        return MaterialApp(
             title: 'ЛизБез',
             home: Author(),
+            theme: myTheme,
         );
     }
 }
