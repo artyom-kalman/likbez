@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:likbez/views/books.dart';
-import 'package:likbez/views/author.dart';
+import 'package:likbez/views/author/author.dart';
 import 'theme/theme.dart';
 
 class Likbez extends StatelessWidget {
