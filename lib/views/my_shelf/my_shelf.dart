@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:epub_view/epub_view.dart';
 import 'package:flutter/material.dart';
@@ -32,14 +33,16 @@ class MyShelfState extends State<MyShelf> {
 
     final _prefs = SharedPreferences.getInstance();
 
+    late Box<Uint8List> bookCoverBox;
     late Box<Uint8List> booksContentBox;
     late Box<BookDescription> bookDescriptionBox;
 
     @override
     void initState() {
         super.initState();
-        booksContentBox = Hive.box(Boxes.booksContentBoxName.value);
-        bookDescriptionBox = Hive.box(Boxes.booksDescriptionBoxName.value);
+        bookCoverBox        = Hive.box(Boxes.bookCoverBox.value);
+        booksContentBox     = Hive.box(Boxes.booksContentBoxName.value);
+        bookDescriptionBox  = Hive.box(Boxes.booksDescriptionBoxName.value);
         
         _booksCounter = _prefs.then((prefs) {
             return prefs.getInt('counter') ?? 0;
@@ -187,7 +190,7 @@ class MyShelfState extends State<MyShelf> {
         final newBookId = await _incrementCounter();
         var author = 'Автор';
         var title = 'Название';
-        img.Image? cover;
+        Uint8List cover = Uint8List(0);
 
         final newBookContent = file.readAsBytesSync();
 
@@ -197,21 +200,18 @@ class MyShelfState extends State<MyShelf> {
             final epubBook = await EpubReader.readBook(newBookContent);
             author = epubBook.Author!;
             title = epubBook.Title!;
-            cover = epubBook.CoverImage;
-            // cover.
-
-            // cover = epubBook.CoverImage!;
-            // pagesTotal = epubBook.Content
+            cover = epubBook.CoverImage!.getBytes();
         }
 
         final newBookDescription = BookDescription(
             bookId: newBookId,
             name: title,
             author: author,
-            pagesTotal: 5,
+            pagesTotal: 1,
             type: fileExtension,
         );
 
+        bookCoverBox.put(newBookId, cover);
         booksContentBox.put(newBookId, newBookContent);
         bookDescriptionBox.put(newBookId, newBookDescription);
     }

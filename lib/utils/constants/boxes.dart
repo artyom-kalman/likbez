@@ -1,6 +1,7 @@
 enum Boxes {
     booksContentBoxName('bookContent'),
-    booksDescriptionBoxName('bookDescription1');
+    booksDescriptionBoxName('bookDescription1'),
+    bookCoverBox('bookCoverBox');
 
     final String value;
 

@@ -14,8 +14,10 @@ void main() async {
     await Hive.initFlutter();
     
     Hive.registerAdapter(BookDescriptionAdapter());
-    await Hive.openBox<BookDescription>(Boxes.booksDescriptionBoxName.value);
+
+    await Hive.openBox<Uint8List>(Boxes.bookCoverBox.value);
     await Hive.openBox<Uint8List>(Boxes.booksContentBoxName.value);
+    await Hive.openBox<BookDescription>(Boxes.booksDescriptionBoxName.value);
 
     runApp(const Likbez());
 }
