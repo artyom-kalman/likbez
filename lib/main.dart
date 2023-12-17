@@ -15,7 +15,7 @@ void main() async {
     
     Hive.registerAdapter(BookDescriptionAdapter());
 
-    await Hive.openBox<Uint8List>(Boxes.bookCoverBox.value);
+    // await Hive.openBox<Uint8List>(Boxes.bookCoverBox.value);
     await Hive.openBox<Uint8List>(Boxes.booksContentBoxName.value);
     await Hive.openBox<BookDescription>(Boxes.booksDescriptionBoxName.value);
 

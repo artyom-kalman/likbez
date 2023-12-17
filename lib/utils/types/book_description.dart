@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:image/image.dart' show Image;
 
 @HiveType(typeId: 0)
 class BookDescription extends HiveObject {
@@ -12,20 +13,24 @@ class BookDescription extends HiveObject {
     String author;
 
     @HiveField(3)
-    late int? currentPage;
+    late int currentPage;
 
     @HiveField(4)
-    int? pagesTotal;
+    int pagesTotal;
 
     @HiveField(5)
     String? type;
 
+    int get progress {
+        return (currentPage / pagesTotal * 100).round();
+    }
 
-    BookDescription({required this.bookId, required this.name, required this.author, this.pagesTotal, this.type}) {
+
+    BookDescription({required this.bookId, required this.name, required this.author, required this.pagesTotal, this.type}) {
         currentPage = 0;
     }
 
-    BookDescription.fromBox({required this.bookId, required this.name, required this.author, this.currentPage, this.pagesTotal, this.type});
+    BookDescription.fromBox({required this.bookId, required this.name, required this.author, required this.currentPage, required this.pagesTotal, this.type});
  
     @override
     String toString() {

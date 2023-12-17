@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:epub_view/epub_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,7 +11,8 @@ import 'package:likbez/utils/types/book_description.dart';
 import 'package:likbez/utils/constants/boxes.dart';
 
 import 'package:hive/hive.dart';
-import 'package:path/path.dart' as p;
+import 'package:epub_view/epub_view.dart' show EpubReader;
+import 'package:path/path.dart' show extension;
 import 'package:image/image.dart' as img;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:file_picker/file_picker.dart';
@@ -33,14 +33,14 @@ class MyShelfState extends State<MyShelf> {
 
     final _prefs = SharedPreferences.getInstance();
 
-    late Box<Uint8List> bookCoverBox;
+    // late Box<Uint8List> bookCoverBox;
     late Box<Uint8List> booksContentBox;
     late Box<BookDescription> bookDescriptionBox;
 
     @override
     void initState() {
         super.initState();
-        bookCoverBox        = Hive.box(Boxes.bookCoverBox.value);
+        // bookCoverBox        = Hive.box(Boxes.bookCoverBox.value);
         booksContentBox     = Hive.box(Boxes.booksContentBoxName.value);
         bookDescriptionBox  = Hive.box(Boxes.booksDescriptionBoxName.value);
         
@@ -66,39 +66,36 @@ class MyShelfState extends State<MyShelf> {
                     ]
                 ),
 
-                body: Builder(
-                    builder: (context) {
-                        final box = bookDescriptionBox;
-                        return ListView.builder(
-                            itemCount: box.length,
-                            itemBuilder: (context, index) {
-                                final book = box.getAt(index)!;
+                body: ListView.builder(
+                    itemCount: bookDescriptionBox.length,
+                    itemBuilder: (context, index) {
+                        final book = bookDescriptionBox.getAt(index)!;
+                        
+                        
+                        return Container(
+                            child: ListTile(
+                                title: Text(book.name),
+                                subtitle: Text('Автор: ${book.author}\nType: ${book.type}\n${book.progress}%'),
                                 
-                                return ListTile(
-                                    title: Text(book.name),
-                                    subtitle: Text('Автор: ${book.author}\nType: ${book.type}'),
-                                    
-                                    onTap: () {
-                                        final bookId = book.bookId;
-                                        final type = book.type;
-                                        final bookContent = booksContentBox.get(bookId)!;
-                                        print('fbdfbdfbd $type');
+                                onTap: () {
+                                    final bookId = book.bookId;
+                                    final type = book.type;
+                                    final bookContent = booksContentBox.get(bookId)!;
 
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                                    if(type == '.epub') {
-                                                        return EpubScreen(data: bookContent);
-                                                    }
-
-                                                    return PDFScreen(data: bookContent);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) {
+                                                if(type == '.epub') {
+                                                    return EpubScreen(data: bookContent);
                                                 }
-                                            ),
-                                        );
-                                    },
-                                );
-                            },
+
+                                                return PDFScreen(data: bookContent);
+                                            }
+                                        ),
+                                    );
+                                },
+                            )
                         );
                     }
                 ),
@@ -126,20 +123,17 @@ class MyShelfState extends State<MyShelf> {
 
                         // Проверка загрузки
                         final count = await _booksCounter;
-                        final uintContent = booksContentBox.get(count);
                         // print(count);
+                        // final uintContent = booksContentBox.get(count);
                         // print(uintContent);
-                        print(bookDescriptionBox.get(count));
+                        // print(bookDescriptionBox.get(count));
+                        // print(bookCoverBox.get(count));
                     },
 
                     child: const Icon(Icons.add),
                 ),
             ),
         );
-    }
-
-    double getProgress(int currentValue, int totalValue) {
-        return currentValue / totalValue * 100;
     }
 
     Map<dynamic, BookDescription> getBooks() {
@@ -190,17 +184,17 @@ class MyShelfState extends State<MyShelf> {
         final newBookId = await _incrementCounter();
         var author = 'Автор';
         var title = 'Название';
-        Uint8List cover = Uint8List(0);
+        // Uint8List cover = Uint8List(0);
 
         final newBookContent = file.readAsBytesSync();
 
-        String fileExtension = p.extension(file.path);
+        String fileExtension = extension(file.path);
 
         if (fileExtension == '.epub') {
             final epubBook = await EpubReader.readBook(newBookContent);
             author = epubBook.Author!;
             title = epubBook.Title!;
-            cover = epubBook.CoverImage!.getBytes();
+            // cover = epubBook.CoverImage!.getBytes();
         }
 
         final newBookDescription = BookDescription(
@@ -208,10 +202,10 @@ class MyShelfState extends State<MyShelf> {
             name: title,
             author: author,
             pagesTotal: 1,
-            type: fileExtension,
+            type: fileExtension
         );
 
-        bookCoverBox.put(newBookId, cover);
+        // bookCoverBox.put(newBookId, cover);
         booksContentBox.put(newBookId, newBookContent);
         bookDescriptionBox.put(newBookId, newBookDescription);
     }

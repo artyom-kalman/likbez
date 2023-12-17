@@ -20,7 +20,7 @@ class BookDescriptionAdapter extends TypeAdapter<BookDescription> {
         author: author,
         currentPage: currentPage,
         pagesTotal: pagesTotal,
-        type: type
+        type: type,
     );
   }
 
