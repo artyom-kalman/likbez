@@ -24,8 +24,8 @@ class Author extends StatelessWidget {
                         AuthorCard(),
                         Biography(),
                         BooksScroll('Произведения'),
-                ],
-              ),
+                    ],
+                ),
             )
         );
     }
