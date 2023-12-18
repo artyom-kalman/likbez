@@ -15,7 +15,6 @@ import 'package:likbez/utils/constants/boxes.dart';
 import 'package:hive/hive.dart';
 import 'package:epub_view/epub_view.dart' show EpubReader;
 import 'package:path/path.dart' show extension, basenameWithoutExtension;
-// import 'package:image/image.dart' as img;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,8 +30,6 @@ class MyShelf extends StatefulWidget {
 }
 
 class MyShelfState extends State<MyShelf> {
-    late Future<int> _booksCounter;
-
     final _prefs = SharedPreferences.getInstance();
 
     // late Box<Uint8List> bookCoverBox;
@@ -45,16 +42,13 @@ class MyShelfState extends State<MyShelf> {
         // bookCoverBox        = Hive.box(Boxes.bookCoverBox.value);
         booksContentBox     = Hive.box(Boxes.booksContentBoxName.value);
         bookDescriptionBox  = Hive.box(Boxes.booksDescriptionBoxName.value);
-        
-        _booksCounter = _prefs.then((prefs) {
-            return prefs.getInt('counter') ?? 0;
-        });
     }
 
     @override
     Widget build(BuildContext context) {
         return MaterialApp(
-            title: 'Flutter PDF View',
+            theme: myTheme,
+            title: 'Ликбез',
             debugShowCheckedModeBanner: false,
             home: Scaffold(
                 appBar: AppBar(
@@ -70,7 +64,6 @@ class MyShelfState extends State<MyShelf> {
 
                 body: Container(
                     padding: const EdgeInsets.only(top: 10),
-                    color: black,
                     child: ListView.builder(
                         itemCount: bookDescriptionBox.length,
                         itemBuilder: (context, index) {
@@ -197,13 +190,6 @@ class MyShelfState extends State<MyShelf> {
         final newCounterValue = previousCounterValue + 1;
         
         await prefs.setInt(booksCounterName, newCounterValue);
-
-        setState(() {
-            _booksCounter = prefs.setInt(booksCounterName, newCounterValue)
-                .then((bool success) {
-                    return newCounterValue;
-                });
-        });
 
         return newCounterValue;
     }
