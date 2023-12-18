@@ -16,7 +16,7 @@ class BookDescription extends HiveObject {
     late int currentPage;
 
     @HiveField(4)
-    int pagesTotal;
+    late int pagesTotal;
 
     @HiveField(5)
     String? type;
@@ -26,8 +26,9 @@ class BookDescription extends HiveObject {
     }
 
 
-    BookDescription({required this.bookId, required this.name, required this.author, required this.pagesTotal, this.type}) {
+    BookDescription({required this.bookId, required this.name, required this.author, this.type}) {
         currentPage = 0;
+        pagesTotal = 1;
     }
 
     BookDescription.fromBox({required this.bookId, required this.name, required this.author, required this.currentPage, required this.pagesTotal, this.type});
